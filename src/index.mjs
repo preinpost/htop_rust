@@ -22,14 +22,23 @@ function App (props) {
 }
 
 
-setInterval(async () => {
-  let response = await fetch('/api/cpus');
-  if (response.status !== 200) {
-    throw new Error(`HTTp error! status: ${response.status}`);
-  }
+// setInterval(async () => {
+//   let response = await fetch('/api/cpus');
+//   if (response.status !== 200) {
+//     throw new Error(`HTTp error! status: ${response.status}`);
+//   }
+//
+//   let json = await response.json();
+//
+//   render(html`<${App} cpus=${json} />`, document.body);
+//
+// }, 1000);
 
-  let json = await response.json();
+let url = new URL("/realtime/cpus", window.location.href);
+url.protocol = url.protocol.replace("http", "ws");
 
-  render(html`<${App} cpus=${json} />`, document.body);
-
-}, 1000);
+let ws = new WebSocket(url.href);
+ws.onmessage = (ev) => {
+  render(html`<${App} cpus=${JSON.parse(ev.data)} />`, document.body);
+  // console.log(JSON.parse(ev.data));
+}
