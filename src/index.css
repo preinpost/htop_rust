@@ -1,0 +1,34 @@
+body {
+  background: #EDF6F9;
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+
+
+  background: #FFDDD2;
+  width: 20em;
+  height: 2em;
+  margin: 1em;
+}
+
+.bar .bar-inner {
+  z-index: 5;
+
+  background: #FF9B71;
+  height: 100%;
+
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+
+  transition: width 0.1s;
+}
+
+.bar label {
+  z-index: 10;
+}

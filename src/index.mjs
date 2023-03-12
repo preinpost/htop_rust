@@ -1,6 +1,26 @@
-import {h, Component, render} from 'https://esm.sh/preact';
+import {h, render} from 'https://esm.sh/preact';
+import htm from 'https://esm.sh/htm';
 
 let i = 0;
+
+const html = htm.bind(h);
+
+function App (props) {
+  return html`
+    <div>
+      ${props.cpus.map((cpu) => {
+        return html`
+          <div class="bar">
+            <div class="bar-inner" style="width: ${cpu}%"></div>
+            <label>${cpu.toFixed(2)}%</label>
+          </div>
+          
+        `;
+      })}
+    </div>
+  `;
+}
+
 
 setInterval(async () => {
   let response = await fetch('/api/cpus');
@@ -10,10 +30,6 @@ setInterval(async () => {
 
   let json = await response.json();
 
-  i += 1;
-  // document.body.textContent = JSON.stringify(json, null, 2);
-
-  const app = h('pre', null, JSON.stringify(json, null, 2))
-  render(app, document.body);
+  render(html`<${App} cpus=${json} />`, document.body);
 
 }, 1000);
